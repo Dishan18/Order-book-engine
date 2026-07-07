@@ -14,6 +14,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(
     market_feed_engine
     src/main.cpp
+    src/protocol/serializer.cpp
+    src/protocol/parser.cpp
+    src/simulator/feed_generator.cpp
+    src/simulator/message_dispatcher.cpp
 )
 
 target_include_directories(
