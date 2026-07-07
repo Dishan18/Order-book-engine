@@ -1,11 +1,14 @@
 #include "protocol/parser.hpp"
 #include "protocol/binary_reader.hpp"
 #include <stdexcept>
+
 namespace mfe {
-Message Parser::parse(const std::vector<std::uint8_t>& buffer)
+
+Message Parser::parse(std::span<const std::uint8_t> buffer)
 {
     BinaryReader reader(buffer);
     auto type = reader.read<MessageType>();
+    
     switch (type)
     {
         case MessageType::Add:
@@ -13,10 +16,8 @@ Message Parser::parse(const std::vector<std::uint8_t>& buffer)
             AddOrderMessage msg;
             msg.order_id = reader.read<std::uint64_t>();
             msg.timestamp = reader.read<std::uint64_t>();
-            reader.read_bytes(
-                msg.symbol.data(),
-                msg.symbol.size());
-            msg.price = reader.read<double>();
+            reader.read_bytes(msg.symbol.data(), msg.symbol.size());
+            msg.price = reader.read<Price>();
             msg.quantity = reader.read<std::uint32_t>();
             msg.side = reader.read<Side>();
             return msg;
@@ -27,10 +28,9 @@ Message Parser::parse(const std::vector<std::uint8_t>& buffer)
             msg.order_id = reader.read<std::uint64_t>();
             msg.timestamp = reader.read<std::uint64_t>();
             msg.new_quantity = reader.read<std::uint32_t>();
-            msg.new_price = reader.read<double>();
+            msg.new_price = reader.read<Price>();
             return msg;
         }
-
         case MessageType::Cancel:
         {
             CancelOrderMessage msg;

@@ -5,7 +5,7 @@
 namespace mfe {
 FeedGenerator::FeedGenerator()
     : rng_(std::random_device{}()),
-      price_dist_(100.0, 200.0),
+      price_dist_(10000, 20000),
       quantity_dist_(1, 1000),
       side_dist_(0, 1),
       next_order_id_(1000)

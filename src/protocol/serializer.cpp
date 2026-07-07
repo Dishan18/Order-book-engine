@@ -2,11 +2,10 @@
 #include "protocol/binary_writer.hpp"
 
 namespace mfe {
-std::vector<std::uint8_t>
-Serializer::serialize(const AddOrderMessage& message)
+
+std::size_t Serializer::serialize(const AddOrderMessage& message, std::span<std::uint8_t> out_buffer)
 {
-    std::vector<std::uint8_t> buffer;
-    BinaryWriter writer(buffer);
+    BinaryWriter writer(out_buffer);
     writer.write(MessageType::Add);
     writer.write(message.order_id);
     writer.write(message.timestamp);
@@ -14,39 +13,40 @@ Serializer::serialize(const AddOrderMessage& message)
     writer.write(message.price);
     writer.write(message.quantity);
     writer.write(message.side);
-    return buffer;
+    
+    return writer.bytes_written();
 }
-std::vector<std::uint8_t>
-Serializer::serialize(const ModifyOrderMessage& message)
+
+std::size_t Serializer::serialize(const ModifyOrderMessage& message, std::span<std::uint8_t> out_buffer)
 {
-    std::vector<std::uint8_t> buffer;
-    BinaryWriter writer(buffer);
+    BinaryWriter writer(out_buffer);
     writer.write(MessageType::Modify);
     writer.write(message.order_id);
     writer.write(message.timestamp);
     writer.write(message.new_quantity);
     writer.write(message.new_price);
-    return buffer;
+    
+    return writer.bytes_written();
 }
-std::vector<std::uint8_t>
-Serializer::serialize(const CancelOrderMessage& message)
+
+std::size_t Serializer::serialize(const CancelOrderMessage& message, std::span<std::uint8_t> out_buffer)
 {
-    std::vector<std::uint8_t> buffer;
-    BinaryWriter writer(buffer);
+    BinaryWriter writer(out_buffer);
     writer.write(MessageType::Cancel);
     writer.write(message.order_id);
     writer.write(message.timestamp);
-    return buffer;
+    
+    return writer.bytes_written();
 }
-std::vector<std::uint8_t>
-Serializer::serialize(const TradeMessage& message)
+
+std::size_t Serializer::serialize(const TradeMessage& message, std::span<std::uint8_t> out_buffer)
 {
-    std::vector<std::uint8_t> buffer;
-    BinaryWriter writer(buffer);
+    BinaryWriter writer(out_buffer);
     writer.write(MessageType::Trade);
     writer.write(message.order_id);
     writer.write(message.timestamp);
     writer.write(message.traded_quantity);
-    return buffer;
+    
+    return writer.bytes_written();
 }
 }
