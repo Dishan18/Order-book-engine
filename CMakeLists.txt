@@ -19,6 +19,7 @@ set(COMMON_SOURCES
     src/simulator/message_dispatcher.cpp
     src/network/tcp_server.cpp
     src/network/tcp_client.cpp
+    src/engine/order_book.cpp
 )
 
 # 1. Build the Server Executable
