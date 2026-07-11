@@ -37,7 +37,6 @@ int main()
             client.send(std::span<const std::uint8_t>(send_buffer.data(), total_wire_bytes));
 
             // Throttle slightly so we don't crash your WSL terminal with stdout printing
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
     }
     catch (const std::exception& e) {
