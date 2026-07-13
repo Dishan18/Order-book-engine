@@ -98,3 +98,42 @@ This perfectly validates our earlier profiling conclusion. The longer you run th
 That first run processed a massive 8.4 million messages, but the median spiked to 69 milliseconds. That is a textbook example of thread starvation. It is highly likely that during that specific run, WSL hit a thermal throttle, or the producer thread completely overran the consumer, causing the `yield()` logic to constantly surrender the CPU. In a real-world scenario, this is exactly the data point you would point to to justify buying expensive, bare-metal overclocked servers with isolated CPU cores.
 
 ---
+Future Dashboard:
+-----------------------------------------------------
+ Market Feed Engine Dashboard
+-----------------------------------------------------
+
+Server Status      🟢 Running
+
+Messages/sec       1,245,832
+Latency p50        7.9 μs
+Latency p99        68 ms
+Orders             1,924,551
+Queue Size         43 / 8192
+
+-----------------------------------------------------
+      Live Order Book
+-----------------------------------------------------
+
+SELL
+100.20     1200
+100.19      800
+100.18      500
+
+------------MID------------
+
+BUY
+100.17      650
+100.16      900
+100.15     1100
+
+-----------------------------------------------------
+Latency Graph
+-----------------------------------------------------
+
+μs
+│
+│       •
+│   • •
+│ •
+└──────────────────────────► time
