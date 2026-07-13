@@ -26,6 +26,8 @@ set(COMMON_SOURCES
 add_executable(feed_server src/server_main.cpp ${COMMON_SOURCES})
 target_include_directories(feed_server PRIVATE include)
 
+target_link_libraries(feed_server PRIVATE)
+
 # 2. Build the Client Executable
 add_executable(feed_client src/client_main.cpp ${COMMON_SOURCES})
 target_include_directories(feed_client PRIVATE include)

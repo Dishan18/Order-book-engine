@@ -37,9 +37,7 @@ int main()
         // Lock-Free Queue initialized with a capacity of 1,048,576 elements
         mfe::LockFreeQueue<mfe::Message, 8192> message_queue;
 
-        // ==========================================
         // CONSUMER THREAD: The Order Book Engine
-        // ==========================================
         std::thread engine_thread([&book, &message_queue]() {
             std::cout << "[ENGINE] Thread started. Awaiting messages...\n";
             
@@ -165,6 +163,5 @@ int main()
     catch (const std::exception& e) {
         std::cerr << "[SYSTEM] Fatal Error: " << e.what() << "\n";
     }
-
     return 0;
 }
