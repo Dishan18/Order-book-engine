@@ -137,3 +137,25 @@ Latency Graph
 │   • •
 │ •
 └──────────────────────────► time
+
+Path 1: The Direct WebSocket Server (Recommended)
+Instead of forcing Next.js to act as a middleman, you embed a lightweight WebSocket server directly into your C++ application.
+
+How it works: You run your Next.js app purely as a frontend. When the React page loads in the browser, it opens a persistent WebSocket connection directly to your C++ engine (e.g., ws://localhost:8080).
+
+The C++ Side: You spin up a low-priority "Metrics Thread" in your C++ code. Every 100 milliseconds, it safely reads the atomic queue size and order book depth, formats it into a small JSON string, and blasts it over the WebSocket to all connected browsers.
+
+The Libraries: uWebSockets (used by major crypto exchanges) or Boost.Beast.
+
+Why it wins: It is the lowest latency path. The browser talks directly to the engine.
+
+Path 2: The Node.js "Sidecar" (The Enterprise Way)
+If you do not want to add web networking libraries to your pristine C++ codebase, you build a translator.
+
+How it works: Your Next.js backend (running Node.js) acts as the middleman.
+
+The Bridge: Your C++ engine blasts raw binary or simple text strings over a basic, fire-and-forget UDP socket to a local Node.js server.
+
+The Web: The Node.js server receives that UDP blast, translates it into JSON, and uses Socket.io or standard WebSockets to broadcast it to the React frontend.
+
+Why it wins: It strictly separates concerns. Your C++ code remains 100% focused on trading math, and Node.js handles all the messy web connections.
